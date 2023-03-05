@@ -8,7 +8,8 @@ import multer from "multer";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-import {register} from './controllers/auth'
+import { signup } from './controllers/auth.js'
+import authRoutes from './routes/auth.js'
 const port = process.env.PORT | 3005;
 
 
@@ -40,10 +41,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-app.post('/auth/register/', upload.single('picture'), register);
+app.post('/auth/signup/', upload.single('picture'), signup);
+app.use('/auth', authRoutes)
 
-mongoose.connect('mongodb://localhost:27017/slogger').then(()=> {
-    app.listen(port, ()=>{
+mongoose.connect('mongodb://localhost:27017/slogger').then(() => {
+    app.listen(port, () => {
         console.log(`Listening to port ${port}`)
     })
 }).catch(err => {
