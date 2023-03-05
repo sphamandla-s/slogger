@@ -10,6 +10,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { signup } from './controllers/auth.js'
 import authRoutes from './routes/auth.js'
+import usersRoutes from './routes/users.js'
 const port = process.env.PORT | 3005;
 
 
@@ -41,9 +42,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
+// i placed this routes direct from here because we want use the upload middleWare
 app.post('/auth/signup/', upload.single('picture'), signup);
-app.use('/auth', authRoutes)
 
+// i created a separate file for my routes
+app.use('/auth', authRoutes);
+app.use('/users', usersRoutes)
+
+
+
+// Connect to the mango database and start the server
 mongoose.connect('mongodb://localhost:27017/slogger').then(() => {
     app.listen(port, () => {
         console.log(`Listening to port ${port}`)
