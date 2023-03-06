@@ -7,9 +7,7 @@ const routes = express.Router();
 
 routes.get('/:id', verifyToken, getUser);
 routes.get('/:id/friends',verifyToken, getUserFriends);
-routes.get('/hello',(req,res)=>{
-    res.send('Hello')
-})
+
 
 routes.patch('/:id:friendId', verifyToken , addRemoveFriend);
 

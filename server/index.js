@@ -11,6 +11,9 @@ import { fileURLToPath } from "url";
 import { signup } from './controllers/auth.js'
 import authRoutes from './routes/auth.js'
 import usersRoutes from './routes/users.js'
+import postsRoutes from './routes/posts.js'
+import {createPost} from './controllers/posts.js'
+import { verifyToken } from "./middleware/auth.js";
 const port = process.env.PORT | 3005;
 
 
@@ -44,11 +47,12 @@ const upload = multer({ storage })
 
 // i placed this routes direct from here because we want use the upload middleWare
 app.post('/auth/signup/', upload.single('picture'), signup);
+app.post('/posts/', verifyToken ,upload.single('picture'), createPost)
 
 // i created a separate file for my routes
 app.use('/auth', authRoutes);
 app.use('/users', usersRoutes)
-
+app.use('/posts', postsRoutes)
 
 
 // Connect to the mango database and start the server
